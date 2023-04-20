@@ -1,0 +1,5 @@
+package com.te.lms.DTO;
+
+public class MockAddDetailsDTO {
+
+}

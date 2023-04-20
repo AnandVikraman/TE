@@ -1,0 +1,5 @@
+package com.te.lms.handler;
+
+public class CustomExceptionHandler {
+
+}

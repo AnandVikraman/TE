@@ -1,0 +1,275 @@
+package com.te.lms.service;
+
+import java.time.LocalDate;
+import java.util.Map;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.te.lms.DAO.AddressDetailsRepository;
+import com.te.lms.DAO.BankDetailsRepository;
+import com.te.lms.DAO.ContactRepository;
+import com.te.lms.DAO.EducationDetailsRepository;
+import com.te.lms.DAO.ExperienceRepository;
+import com.te.lms.DAO.PrimaryInfoRepository;
+import com.te.lms.DAO.SecondaryInfoRepository;
+import com.te.lms.DAO.TechnicalSkillsRepository;
+import com.te.lms.DTO.AddressDetailsUpdateDTO;
+import com.te.lms.DTO.BankDetailsUpdateDTO;
+import com.te.lms.DTO.ContactUpdateDTO;
+import com.te.lms.DTO.EducationDetailsUpdateDTO;
+import com.te.lms.DTO.ExperienceDetailsUpdateDTO;
+import com.te.lms.DTO.PrimaryInfoDTO;
+import com.te.lms.DTO.PrimaryInfoUpdateDTO;
+import com.te.lms.DTO.SecondaryInfoUpdateDTO;
+import com.te.lms.DTO.TechnicalSkillsUpdateDTO;
+import com.te.lms.entity.AddressDetails;
+import com.te.lms.entity.BankDetails;
+import com.te.lms.entity.Contact;
+import com.te.lms.entity.EducationDetails;
+import com.te.lms.entity.Experience;
+import com.te.lms.entity.PrimaryInfo;
+import com.te.lms.entity.SecondaryInfo;
+import com.te.lms.entity.TechnicalSkills;
+import com.te.lms.exception.IdNotFoundException;
+
+@Service
+public class EmployeeServiceImplement implements EmployeeService {
+
+	@Autowired
+	private PrimaryInfoRepository primaryInfoRepository;
+	@Autowired
+	private SecondaryInfoRepository secondaryInfoRepository;
+	@Autowired
+	private EducationDetailsRepository educationDetailsRepository;
+	@Autowired
+	private AddressDetailsRepository addressDetailsRepository;
+	@Autowired
+	private BankDetailsRepository bankDetailsRepository;
+	@Autowired
+	private TechnicalSkillsRepository technicalSkillsRepository;
+	@Autowired
+	private ExperienceRepository experienceRepository;
+	@Autowired
+	private ContactRepository contactRepository;
+
+	@Autowired
+	private ModelMapper mapper;
+
+	@Override
+	public PrimaryInfo register(PrimaryInfoDTO primaryInfoDTO) {
+
+		PrimaryInfo map = mapper.map(primaryInfoDTO, PrimaryInfo.class);
+		return primaryInfoRepository.save(map);
+	}
+
+	@Override
+	public PrimaryInfoUpdateDTO updatePrimaryInfo(Map<String, String> map, String employeeId) {
+		PrimaryInfo primaryInfo = primaryInfoRepository.findById(employeeId)
+				.orElseThrow(() -> new IdNotFoundException("Id not found exception"));
+		;
+		if (map.containsKey("employeeName")) {
+			primaryInfo.setEmployeeName(map.get("employeeName"));
+		}
+		if (map.containsKey("dateOfJoining")) {
+			primaryInfo.setDateOfJoining((LocalDate.parse(map.get("dateOfJoining"))));
+		}
+		if (map.containsKey("dateOfBirth")) {
+			primaryInfo.setDateOfBirth(LocalDate.parse(map.get("dateOfBirth")));
+		}
+		if (map.containsKey("emailId")) {
+			primaryInfo.setEmailId((map.get("emailId")));
+
+		}
+		if (map.containsKey("bloodGroup")) {
+			primaryInfo.setBloodGroup((map.get("bloodGroup")));
+		}
+		if (map.containsKey("designation")) {
+			primaryInfo.setDesignation((map.get("designation")));
+		}
+		if (map.containsKey("gender")) {
+			primaryInfo.setGender((map.get("gender")));
+		}
+		if (map.containsKey("nationality")) {
+			primaryInfo.setNationality(map.get("nationality"));
+		}
+		if (map.containsKey("employeeStatus")) {
+			primaryInfo.setEmployeeStatus((map.get("employeeStatus")));
+		}
+
+		PrimaryInfo info = primaryInfoRepository.save(primaryInfo);
+
+		return mapper.map(info, PrimaryInfoUpdateDTO.class);
+	}
+
+	@Override
+	public SecondaryInfoUpdateDTO updateSecondaryInfo(Map<String, String> map, String panNo) {
+		SecondaryInfo secondaryInfo = secondaryInfoRepository.findById(panNo)
+				.orElseThrow(() -> new IdNotFoundException("Id not found exception"));
+		;
+		if (map.containsKey("aadharNo")) {
+			secondaryInfo.setAadharNo(Long.valueOf(map.get("aadharNo")));
+		}
+		if (map.containsKey("fatherName")) {
+			secondaryInfo.setFatherName(map.get("fatherName"));
+		}
+		if (map.containsKey("motherName")) {
+			secondaryInfo.setMotherName(map.get("motherName"));
+		}
+		if (map.containsKey("spouseName")) {
+			secondaryInfo.setSpouseName(map.get("spouseName"));
+		}
+		if (map.containsKey("passportNo")) {
+			secondaryInfo.setPassportNo(map.get("passportNo"));
+		}
+		if (map.containsKey("maritalStatus")) {
+			secondaryInfo.setMaritalStatus((map.get("maritalStatus")));
+		}
+		SecondaryInfo info = secondaryInfoRepository.save(secondaryInfo);
+
+		return mapper.map(info, SecondaryInfoUpdateDTO.class);
+	}
+
+	@Override
+	public EducationDetailsUpdateDTO updateEducationDetailsInfo(Map<String, String> map, Integer sNo) {
+		EducationDetails educationDetails = educationDetailsRepository.findById(sNo)
+				.orElseThrow(() -> new IdNotFoundException("Id not found exception"));
+
+		if (map.containsKey("educationType")) {
+			educationDetails.setEducationType(map.get("educationType"));
+		}
+		if (map.containsKey("yearOfPassing")) {
+			educationDetails.setYearOfPassing(Integer.valueOf(map.get("yearOfPassing")));
+		}
+		if (map.containsKey("percentage")) {
+			educationDetails.setPercentage((Double.valueOf(map.get("percentage"))));
+		}
+		if (map.containsKey("instituteName")) {
+			educationDetails.setInstituteName((map.get("instituteName")));
+		}
+		if (map.containsKey("universityname")) {
+			educationDetails.setUniversityname(((map.get("universityname"))));
+		}
+		if (map.containsKey("specialization")) {
+			educationDetails.setSpecialization((map.get("specialization")));
+		}
+		if (map.containsKey("state")) {
+			educationDetails.setState((map.get("state")));
+		}
+		EducationDetails details = educationDetailsRepository.save(educationDetails);
+
+		return mapper.map(details, EducationDetailsUpdateDTO.class);
+	}
+
+	@Override
+	public AddressDetailsUpdateDTO addressDetailsUpdateDTO(Map<String, String> map, Integer sNo) {
+		AddressDetails addressDetails = addressDetailsRepository.findById(sNo)
+				.orElseThrow(() -> new IdNotFoundException("Id not found exception"));
+		if (map.containsKey("addressType")) {
+			addressDetails.setAddressType(map.get("addressType"));
+		}
+		if (map.containsKey("doorNo")) {
+			addressDetails.setDoorNo(map.get("doorNo"));
+
+		}
+		if (map.containsKey("street")) {
+			addressDetails.setStreet((map.get("street")));
+		}
+		if (map.containsKey("locality")) {
+			addressDetails.setLocality((map.get("locality")));
+		}
+		if (map.containsKey("city")) {
+			addressDetails.setCity((map.get("city")));
+		}
+		if (map.containsKey("state")) {
+			addressDetails.setState((map.get("state")));
+		}
+		if (map.containsKey("pinCode")) {
+			addressDetails.setPinCode(Integer.valueOf((map.get("pinCode"))));
+		}
+		if (map.containsKey("landMark")) {
+			addressDetails.setLandMark((map.get("landMark")));
+		}
+		AddressDetails details = addressDetailsRepository.save(addressDetails);
+		return mapper.map(details, AddressDetailsUpdateDTO.class);
+	}
+
+	@Override
+	public BankDetailsUpdateDTO bankDetailsUpdateDTO(Map<String, String> map, Long accountNo) {
+		BankDetails bankDetails = bankDetailsRepository.findById(accountNo)
+				.orElseThrow(() -> new IdNotFoundException("Id not found exception"));
+		if (map.containsKey("bankName")) {
+			bankDetails.setBankName(map.get("bankName"));
+		}
+		if (map.containsKey("accountType")) {
+			bankDetails.setAccountType(map.get("accountType"));
+		}
+		if (map.containsKey("ifscCode")) {
+			bankDetails.setIfscCode(map.get("ifscCode"));
+		}
+		if (map.containsKey("branch")) {
+			bankDetails.setBranch((map.get("branch")));
+		}
+		if (map.containsKey("state")) {
+			bankDetails.setState(((map.get("state"))));
+		}
+		BankDetails details = bankDetailsRepository.save(bankDetails);
+		return mapper.map(details, BankDetailsUpdateDTO.class);
+	}
+
+	@Override
+	public TechnicalSkillsUpdateDTO technicalSkillsUpdateDTO(Map<String, String> map, Integer sNo) {
+		TechnicalSkills technicalSkills = technicalSkillsRepository.findById(sNo)
+				.orElseThrow(() -> new IdNotFoundException("Id not found exception"));
+		if (map.containsKey("skillType")) {
+			technicalSkills.setSkillType(map.get("skillType"));
+		}
+		if (map.containsKey("skillRating")) {
+			technicalSkills.setSkillRating(map.get("skillRating"));
+		}
+		if (map.containsKey("yearOfExperience")) {
+			technicalSkills.setYearOfExperience(map.get("yearOfExperience"));
+		}
+		TechnicalSkills skills = technicalSkillsRepository.save(technicalSkills);
+
+		return mapper.map(skills, TechnicalSkillsUpdateDTO.class);
+	}
+
+	@Override
+	public ExperienceDetailsUpdateDTO experienceDetailsUpdateDTO(Map<String, String> map, Integer sNo) {
+		Experience experience = experienceRepository.findById(sNo)
+				.orElseThrow(() -> new IdNotFoundException("Id not found exception"));
+		if (map.containsKey("companyName")) {
+			experience.setCompanyName(map.get("companyName"));
+		}
+		if (map.containsKey("yearOfExperience")) {
+			experience.setYearOfExperience(map.get("yearOfExperience"));
+		}
+		if (map.containsKey("dateOfJoining")) {
+			experience.setDateOfJoining(LocalDate.parse(map.get("dateOfJoining")));
+		}
+		if (map.containsKey("dateOfRelieving")) {
+			experience.setDateOfRelieving((LocalDate.parse(map.get("dateOfRelieving"))));
+		}
+		if (map.containsKey("designation")) {
+			experience.setDesignation((map.get("designation")));
+		}
+		if (map.containsKey("location")) {
+			experience.setLocation((map.get("location")));
+		}
+		Experience details = experienceRepository.save(experience);
+		return mapper.map(details, ExperienceDetailsUpdateDTO.class);
+	}
+
+	@Override
+	public ContactUpdateDTO contactUpdateDTO(Map<String, String> map, Long contactNumber) {
+		Contact contact = contactRepository.findById(contactNumber).get();
+		if (map.containsKey("contactType")) {
+			contact.setContactType(map.get("contactType"));
+		}
+		Contact save = contactRepository.save(contact);
+		return mapper.map(save, ContactUpdateDTO.class);
+	}
+
+}

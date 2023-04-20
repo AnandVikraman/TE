@@ -1,0 +1,13 @@
+package com.te.lms.response;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Builder
+@Data
+public class SuccessResponse {
+
+	public Object data;
+	public Boolean error;
+	public String message;
+}

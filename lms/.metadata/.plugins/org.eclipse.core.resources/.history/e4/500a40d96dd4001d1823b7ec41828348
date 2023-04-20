@@ -1,0 +1,23 @@
+package com.te.lms.handler;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.te.lms.exception.MentorNotIdFoundException;
+import com.te.lms.response.SuccessResponse;
+
+@RestControllerAdvice
+public class CustomExceptionHandler {
+	
+	@ExceptionHandler(MentorNotIdFoundException.class)
+	public ResponseEntity<SuccessResponse> employeeNotFound(MentorNotIdFoundException exception) {
+
+		return new ResponseEntity<SuccessResponse>(new SuccessResponse(true, exception.getMessage(),null ),
+				HttpStatus.BAD_REQUEST);
+
+	}
+
+
+}

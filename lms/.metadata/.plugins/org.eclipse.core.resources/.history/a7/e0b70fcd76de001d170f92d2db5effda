@@ -1,0 +1,9 @@
+package com.te.lms.service;
+
+import com.te.lms.entity.Authentication;
+
+public interface AuthenticationService {
+	
+	public Authentication addAuthentication(Authentication authentication);
+
+}

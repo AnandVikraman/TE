@@ -1,0 +1,13 @@
+package com.te.lms.DTO;
+
+public class MentorListDTO {
+	
+	private String mentorName;
+	
+	private String employeeId;
+	
+	private String emailId;
+
+	private String skills;
+
+}

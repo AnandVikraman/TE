@@ -1,0 +1,5 @@
+package com.te.lms.DAO;
+
+public class AuthenticationRepository {
+
+}

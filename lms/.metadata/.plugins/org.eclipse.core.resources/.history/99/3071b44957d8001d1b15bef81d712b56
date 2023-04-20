@@ -1,0 +1,9 @@
+package com.te.lms.securityjwtconfig;
+
+import com.te.lms.securityfilter.AuthenticationJwtFilter;
+
+public class AuthenticationSecurityConfig {
+	
+	private AuthenticationJwtFilter jwtFilter;
+
+}

@@ -1,0 +1,38 @@
+package com.te.lms.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.te.lms.DTO.AuthenticationRequest;
+import com.te.lms.DTO.AuthenticationResponse;
+import com.te.lms.service.AuthenticationService;
+import com.te.lms.springsecurityandjwtutil.AuthenticationJwtUtil;
+
+@RestController
+public class AuthenticationController {
+
+	@Autowired
+	private AuthenticationManager manager;
+	@Autowired
+	private AuthenticationJwtUtil jwtUtil;
+	@Autowired
+	private UserDetailsService detailsService;
+	@Autowired
+	private AuthenticationService authenticationService;
+
+	public ResponseEntity<AuthenticationResponse> getAuthenticate(@RequestBody AuthenticationRequest request) {
+		manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmployeeId(), request.getPassword()));
+		UserDetails userDetails = detailsService.loadUserByUsername(request.getEmployeeId());
+		String generateToken = jwtUtil.generateToken(userDetails);
+		return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse(generateToken), HttpStatus.OK);
+
+	}
+
+}

@@ -1,0 +1,146 @@
+package com.te.lms.service;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.te.lms.DAO.BatchDetailsRepository;
+import com.te.lms.DAO.MentorListRepository;
+import com.te.lms.DAO.PrimaryInfoRepository;
+import com.te.lms.DTO.BatchDetailsUpdateDTO;
+import com.te.lms.DTO.MentorListDTO;
+import com.te.lms.entity.BatchDetails;
+import com.te.lms.entity.MentorList;
+import com.te.lms.entity.PrimaryInfo;
+
+@Service
+public class AdminServiceImplementation implements AdminService {
+
+	@Autowired
+	private BatchDetailsRepository batchDetailsRepository;
+	@Autowired
+	private PrimaryInfoRepository primaryInfoRepository;
+	@Autowired
+	private MentorListRepository mentorListRepository;
+	@Autowired
+	private ModelMapper mapper;
+
+	// updateBatchDetails
+	@Override
+	public BatchDetailsUpdateDTO batchDetailsUpdateDTO(Map<String, String> map, Integer sNo) {
+		BatchDetails batchDetails = batchDetailsRepository.findById(sNo).get();
+		if (map.containsKey("batchId")) {
+			batchDetails.setBatchId(map.get("batchId"));
+		}
+		if (map.containsKey("batchName")) {
+			batchDetails.setBatchName(map.get("batchName"));
+		}
+		if (map.containsKey("technologies")) {
+			batchDetails.setTechnologies(map.get("technologies"));
+		}
+		if (map.containsKey("startDate")) {
+			batchDetails.setStartDate(LocalDate.parse(map.get("startDate")));
+		}
+		if (map.containsKey("endDate")) {
+			batchDetails.setEndDate(LocalDate.parse(map.get("endDate")));
+		}
+		if (map.containsKey("status")) {
+			batchDetails.setStatus(map.get("status"));
+		}
+		if (map.containsKey("batchStrength")) {
+			batchDetails.setBatchStrength(map.get("batchStrength"));
+		}
+		BatchDetails details = batchDetailsRepository.save(batchDetails);
+		return mapper.map(details, BatchDetailsUpdateDTO.class);
+	}
+
+	// addBatchDetails
+	@Override
+	public PrimaryInfo addBatchDetails(List<BatchDetailsUpdateDTO> batchDetails, String employeeId) {
+		PrimaryInfo primaryInfo = primaryInfoRepository.findById(employeeId).get();
+		List<BatchDetails> details = new ArrayList<>();
+		batchDetails.forEach(i -> {
+			BatchDetails batch = mapper.map(i, BatchDetails.class);
+
+			details.add(batch);
+		});
+		details.forEach(b -> {
+			primaryInfo.getBatchDetails().add(b);
+		});
+
+		return primaryInfoRepository.save(primaryInfo);
+	}
+
+	// deleteBatchDetails
+	@Override
+	public Boolean deleteBatchDetails(String employeeId, Integer sNo) {
+
+		PrimaryInfo primaryInfo = primaryInfoRepository.findById(employeeId).get();
+
+		if (primaryInfo != null) {
+			primaryInfo.getBatchDetails().remove(batchDetailsRepository.findById(sNo).get());
+
+			primaryInfoRepository.save(primaryInfo);
+
+			batchDetailsRepository.deleteById(sNo);
+			return true;
+		}
+
+		return false;
+	}
+
+	// SearchData
+	@Override
+	public BatchDetails getDataBatchDetails(Integer sNo) {
+		Optional<BatchDetails> findById = batchDetailsRepository.findById(sNo);
+		if (findById.isPresent()) {
+			return findById.get();
+		}
+		return null;
+	}
+
+	// SearchAllData
+	@Override
+	public List<BatchDetails> getAllBatchDeatils(Integer sNo) {
+		List<BatchDetails> findAll = batchDetailsRepository.findAll();
+		if (!findAll.isEmpty()) {
+			return findAll;
+		}
+		return null;
+	}
+
+	@Override
+	public MentorListDTO addMentorList(MentorListDTO mentorListDTO) {
+		MentorList map = mapper.map(mentorListDTO, MentorList.class);
+		mentorListRepository.save(map);
+		return mapper.map(map, MentorListDTO.class);
+	}
+
+	@Override
+	public MentorListDTO updateMentorList(Map<String, String> map, Integer sNo) {
+		MentorList mentorList = mentorListRepository.findById(sNo).get();
+		if (map.containsKey("mentorName")) {
+			mentorList.setMentorName(map.get("mentorName"));
+		}
+		if (map.containsKey("employeeId")) {
+			mentorList.setEmployeeId(map.get("employeeId"));
+		}
+		if (map.containsKey("emailId")) {
+			mentorList.setEmailId(map.get("emailId"));
+		}
+		if (map.containsKey("skills")) {
+			mentorList.setSkills(map.get("skills"));;
+		}
+		MentorList list = mentorListRepository.save(mentorList);
+
+		return mapper.map(list, MentorListDTO.class);
+	}
+
+}

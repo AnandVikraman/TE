@@ -1,0 +1,24 @@
+package com.te.lms.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.te.lms.DAO.AuthenticationRepository;
+import com.te.lms.entity.Authentication;
+import com.te.lms.entity.MyUserDetails;
+
+@Service
+public class AuthenticationUserDetailsService implements UserDetailsService {
+	
+	@Autowired
+	private AuthenticationRepository authenticationRepository;
+	private Authentication authentication;
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Authentication authentication = authenticationRepository.findByEmployeeId(username);
+		return new MyUserDetails(authentication);
+	}
+}

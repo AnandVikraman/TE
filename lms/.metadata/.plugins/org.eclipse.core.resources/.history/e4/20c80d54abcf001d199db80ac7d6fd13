@@ -1,0 +1,52 @@
+package com.te.lms.controller;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.te.lms.DTO.PrimaryInfoDTO;
+import com.te.lms.DTO.PrimaryInfoUpdateDTO;
+import com.te.lms.entity.PrimaryInfo;
+import com.te.lms.response.SuccessResponse;
+import com.te.lms.service.EmployeeService;
+
+@RestController
+public class EmployeeController {
+
+	@Autowired
+	private EmployeeService employeeService;
+
+	@PostMapping("/addEmployee")
+	public ResponseEntity<SuccessResponse> addEmployeeDetails(@RequestBody PrimaryInfoDTO primaryInfoDTO) {
+		PrimaryInfo register = employeeService.register(primaryInfoDTO);
+		if (register != null) {
+			return new ResponseEntity<SuccessResponse>(SuccessResponse.builder().Data(register).error(false)
+					.message("Thanks for your registration").build(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<SuccessResponse>(
+					SuccessResponse.builder().Data(register).error(true).message("Data not register").build(),
+					HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	@GetMapping("/updatePrimaryInfo/{employeeId}")
+	public ResponseEntity<SuccessResponse> editPrimaryInfo(@RequestBody Map<String, String> map, @PathVariable String employeeId){
+		PrimaryInfoUpdateDTO updatePrimaryInfo = employeeService.updatePrimaryInfo(map, employeeId);
+		if (updatePrimaryInfo != null) {
+			return new ResponseEntity<SuccessResponse>(SuccessResponse.builder().Data(updatePrimaryInfo).error(false)
+					.message("Update success").build(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<SuccessResponse>(
+					SuccessResponse.builder().Data(updatePrimaryInfo).error(true).message("Update not success").build(),
+					HttpStatus.BAD_REQUEST);
+		}
+	}
+}

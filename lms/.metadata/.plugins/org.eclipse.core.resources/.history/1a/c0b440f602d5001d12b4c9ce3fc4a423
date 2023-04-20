@@ -1,0 +1,19 @@
+package com.te.lms.DTO;
+
+import jakarta.validation.constraints.NotNull;
+
+public class MentorDisplayDTO {
+
+	private String employeeId;
+
+	private String employeeName;
+
+	private String mocksTaken;
+
+	private String mockRatings;
+
+	private String attendance;
+
+	private String status;
+
+}

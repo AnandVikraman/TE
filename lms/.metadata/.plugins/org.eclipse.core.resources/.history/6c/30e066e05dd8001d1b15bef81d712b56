@@ -1,0 +1,12 @@
+package com.te.lms;
+
+import org.springframework.boot.SpringApplication;
+
+
+public class LmsApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(LmsApplication.class, args);
+	}
+
+}

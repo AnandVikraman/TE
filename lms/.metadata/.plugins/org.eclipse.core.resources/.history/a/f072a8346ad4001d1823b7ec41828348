@@ -1,0 +1,13 @@
+package com.te.lms.exception;
+
+import java.util.function.Supplier;
+
+public class MentorNotIdFoundException implements Supplier {
+
+	@Override
+	public Object get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

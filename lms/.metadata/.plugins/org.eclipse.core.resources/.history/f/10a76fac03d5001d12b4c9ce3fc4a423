@@ -1,0 +1,21 @@
+package com.te.lms.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.te.lms.DAO.MentorDisplayRepository;
+import com.te.lms.DTO.MentorDisplayDTO;
+
+@Service
+public class MentorserviceImplementation implements MentorService {
+	
+	@Autowired
+	private MentorDisplayRepository mentorDisplayRepository;
+
+	@Override
+	public MentorDisplayDTO addMentorDisplayDetails(MentorDisplayDTO mentorDisplayDTO) {
+		
+		return null;
+	}
+
+}

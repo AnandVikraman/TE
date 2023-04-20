@@ -1,0 +1,19 @@
+package com.te.lms.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.te.lms.DTO.BatchDetailsUpdateDTO;
+import com.te.lms.entity.PrimaryInfo;
+
+public interface AdminService {
+
+	// addBatchDetails
+	public PrimaryInfo addBatchDetails(List<BatchDetailsUpdateDTO> batchDetails, String employeeId);
+
+	// update API Admin module
+	public BatchDetailsUpdateDTO batchDetailsUpdateDTO(Map<String, String> map, Integer sNo);
+
+	// delete Api
+	public Integer deleteBatchDetails(String employeeId,Integer sNo);
+}

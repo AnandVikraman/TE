@@ -1,0 +1,15 @@
+package com.te.lms.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.te.lms.DAO.AuthenticationRepository;
+import com.te.lms.entity.Authentication;
+
+@Service
+public class AuthenticationUserDetailsService {
+	
+	@Autowired
+	private AuthenticationRepository authenticationRepository;
+	private Authentication authentication;
+}

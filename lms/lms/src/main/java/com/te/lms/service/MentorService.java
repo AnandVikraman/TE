@@ -1,0 +1,18 @@
+package com.te.lms.service;
+
+import com.te.lms.DTO.MentorDisplayDTO;
+import com.te.lms.DTO.MockAddDetailsDTO;
+import com.te.lms.DTO.MockRatingDTO;
+
+public interface MentorService {
+
+	// add MentorDisplay
+	public MentorDisplayDTO addMentorDisplayDetails(MentorDisplayDTO mentorDisplayDTO);
+
+	// Create MockRating
+	public MockRatingDTO addMockratingDetails(MockRatingDTO mockRatingDTO);
+	
+	// create AddMockDetails
+	public MockAddDetailsDTO addMockAddDetailsDTO(MockAddDetailsDTO mockAddDetailsDTO);
+
+}

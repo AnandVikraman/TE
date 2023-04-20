@@ -1,0 +1,33 @@
+package com.te.lms.service;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.te.lms.DAO.MentorDisplayRepository;
+import com.te.lms.DTO.MentorDisplayDTO;
+import com.te.lms.DTO.MockRatingDTO;
+import com.te.lms.entity.MentorDisplay;
+
+@Service
+public class MentorserviceImplementation implements MentorService {
+	
+	@Autowired
+	private MentorDisplayRepository mentorDisplayRepository;
+	@Autowired
+	private ModelMapper mapper;
+
+	@Override
+	public MentorDisplayDTO addMentorDisplayDetails(MentorDisplayDTO mentorDisplayDTO) {
+		MentorDisplay map = mapper.map(mentorDisplayDTO, MentorDisplay.class);
+		mentorDisplayRepository.save(map);
+		return mapper.map(map, MentorDisplayDTO.class);
+	}
+
+	@Override
+	public MockRatingDTO addMockratingDetails(MockRatingDTO mockRatingDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

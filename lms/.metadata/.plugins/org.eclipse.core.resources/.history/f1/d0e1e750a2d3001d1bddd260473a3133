@@ -1,0 +1,93 @@
+package com.te.lms.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.te.lms.DTO.BatchDetailsUpdateDTO;
+import com.te.lms.entity.BatchDetails;
+import com.te.lms.entity.PrimaryInfo;
+import com.te.lms.response.SuccessResponse;
+import com.te.lms.service.AdminService;
+
+@RestController
+@RequestMapping("/admin")
+public class AdminController {
+
+	@Autowired
+	private AdminService adminService;
+
+	// update batch details
+	@PutMapping("/updateBatchDetails/{sNo}")
+	public ResponseEntity<SuccessResponse> editBatchDetails(@RequestBody Map<String, String> map,
+			@PathVariable Integer sNo) {
+		BatchDetailsUpdateDTO batchDetailsUpdateDTO = adminService.batchDetailsUpdateDTO(map, sNo);
+		if (batchDetailsUpdateDTO != null) {
+			return new ResponseEntity<SuccessResponse>(SuccessResponse.builder().Data(batchDetailsUpdateDTO)
+					.error(false).message("Update success").build(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<SuccessResponse>(SuccessResponse.builder().Data(batchDetailsUpdateDTO).error(true)
+					.message("Update not success").build(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	// addBatchDetails
+	@PostMapping("/addBatchDetails/{employeeId}")
+	public ResponseEntity<SuccessResponse> addBatchDetails(
+			@RequestBody List<BatchDetailsUpdateDTO> batchDetailsUpdateDTO, @PathVariable String employeeId) {
+
+		PrimaryInfo addBatchDetails = adminService.addBatchDetails(batchDetailsUpdateDTO, employeeId);
+		if (addBatchDetails != null) {
+			return new ResponseEntity<SuccessResponse>(
+					SuccessResponse.builder().Data(addBatchDetails).error(false).message(" success").build(),
+					HttpStatus.OK);
+		} else {
+			return new ResponseEntity<SuccessResponse>(
+					SuccessResponse.builder().Data(addBatchDetails).error(true).message("not success").build(),
+					HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	// deleteBatchDetails
+	@GetMapping("/deleteBatchDetails/{employeeId}/{sNo}")
+	public ResponseEntity<SuccessResponse> deleteBatchDetails(@PathVariable String employeeId,
+			@PathVariable Integer sNo) {
+
+		Boolean deleteBatchDetails = adminService.deleteBatchDetails(employeeId, sNo);
+		if (deleteBatchDetails != null) {
+			return new ResponseEntity<SuccessResponse>(SuccessResponse.builder().Data(deleteBatchDetails).error(false)
+					.message("Data Deleted success").build(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<SuccessResponse>(
+					SuccessResponse.builder().Data(deleteBatchDetails).error(true).message("Data not Deleted").build(),
+					HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	// searchBatchDetails
+	@GetMapping("/searchBatchDetails/{sNo}")
+	public ResponseEntity<SuccessResponse> searchBatchDetails(@PathVariable Integer sNo) {
+
+		BatchDetails dataBatchDetails = adminService.getDataBatchDetails(sNo);
+		if (dataBatchDetails != null) {
+			return new ResponseEntity<SuccessResponse>(
+					SuccessResponse.builder().Data(dataBatchDetails).error(false).message("success").build(),
+					HttpStatus.OK);
+		} else {
+			return new ResponseEntity<SuccessResponse>(
+					SuccessResponse.builder().Data(dataBatchDetails).error(true).message("Not success").build(),
+					HttpStatus.BAD_REQUEST);
+		}
+	}
+
+}

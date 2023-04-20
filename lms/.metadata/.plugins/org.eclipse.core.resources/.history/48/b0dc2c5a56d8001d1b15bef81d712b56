@@ -1,0 +1,6 @@
+package com.te.lms.DTO;
+
+public class AuthenticationResponse {
+
+	private String jwt;
+}

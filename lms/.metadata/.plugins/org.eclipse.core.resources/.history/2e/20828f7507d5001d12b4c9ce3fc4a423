@@ -1,0 +1,10 @@
+package com.te.lms.service;
+
+import com.te.lms.DTO.MentorDisplayDTO;
+
+public interface MentorService {
+	
+	public MentorDisplayDTO addMentorDisplayDetails(MentorDisplayDTO mentorDisplayDTO);
+	
+
+}

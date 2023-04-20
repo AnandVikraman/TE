@@ -1,0 +1,17 @@
+package com.te.lms.DTO;
+
+import java.time.LocalDateTime;
+
+public class MockAddDetailsDTO {
+	private String batchId;
+
+
+	private String mockNo;
+	
+	private String technology;
+	
+	private String panel;
+	
+	private LocalDateTime dateAndTime;
+
+}
